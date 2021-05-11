@@ -1,0 +1,20 @@
+# Story outlining an interaction between the chatbot and the user where:
+# User greets the chatbot
+# Chatbot greets in return
+# User asks a question
+# Chatbot replies with the answer to the question
+
+stories:
+ - story: story 3
+   steps:
+   - intent: faq/container
+   - action: utter_faq/docker
+
+# Keywords:
+# stories -> refers to the list of stories
+# story -> used for the name of a story
+# steps -> list of interactions of story
+# intent -> what the user is trying to accomplish
+#           needs to have an action in return
+# action -> the chatbot action in return to an intent
+#           there can be more than 1 action per intent

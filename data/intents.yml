@@ -1,0 +1,68 @@
+nlu:
+- intent: chitchat/greet
+  examples: |
+    - Hi
+    - Hola
+    - What's up?
+    - How you doing?
+    - Hey
+    - How's it going?
+    - Whattup
+    - Hi bot
+    - Hey!
+    - Hi!
+    - Hola!
+    - Hi my name is [Pablo](name)
+    - Hey my name is [Pablo Ordorica](name)
+
+- intent: chitchat/soccer
+  examples: |
+     - Do you like soccer?
+     - Do you like futbol?
+     - soccer
+     - futbol
+     - What do you think about soccer?
+     - what do you think of futbol?
+     - football
+     - you like football
+     - Me and my friend [Siddhesh](name) like soccer, do you?
+     - [Pablo](name) loves soccer! You should send him an email at [pablo.ordoricaw@gmail.com](email).
+     - [Pablo](name) loves soccer! You should call him at [646-256-2608](phone number).
+
+# FAQ intents always start with faq/ to group all under the same retrieval intent
+
+- intent: faq/container
+  examples: |
+    - What is a container?
+    - what is a container?
+    - What is a container used for?
+    - Can you explain containers to me
+    - Tell me about containers
+    - Do you know anything about containers?
+
+- intent: faq/docker
+  examples: |
+    - What is [Docker](name)?
+    - what is docker
+    - Tell me what docker is
+    - [Docker](name)
+    - Explain [Docker](name) to me
+    - what is [Docker](name)?
+    - DOCKER
+
+- intent: faq/pod
+  examples: |
+    - What is a pod?
+    - what is a pod?
+    - Tell me about pods
+    - I want to learn about pods
+    - PODS
+
+- intent: faq/kubernetes
+  examples: |
+    - What is [Kubernetes](name)?
+    - what is kubernetes?
+    - [Kubernetes](name)
+    - [Kubernetes](name), what is it?
+    - kubernetes
+    - Explain [Kubernetes](name) to me

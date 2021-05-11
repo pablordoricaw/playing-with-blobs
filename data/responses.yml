@@ -1,0 +1,23 @@
+# File outlining the responses to the intents
+# Each response is made of:
+# utter_{name of intent as named in intents file}:
+#    - text: "{response for the intent}"
+responses:
+   utter_chitchat/greet: # multiple answers are allowed. Randombly picks one to answer
+       - text: "Hi!" 
+       - text: "Hola 🙋‍♂️"
+   utter_chitchat/soccer:
+       - text: "I love soccer!"
+
+   utter_faq/container:
+       - text: "A container is a standard unit of software that packages up code and all its dependencies so the 
+       application runs quickly and reliably from one computing environment to another. "
+   utter_faq/docker:
+       - text: "Docker is a set of platform as a service products that use OS-level virtualization
+       to deliver software in packages called containers. You can find out more [here](https://www.docker.com/)"
+   utter_faq/pod:
+      - text: "Pods are the smallest, most basic deployable objects in Kubernetes. A Pod represents a single 
+      instance of a running process in your cluster."
+   utter_faq/kubernetes:
+       - text: "Kubernetes is an open-source container-orchestration system for automating computer application 
+       deployment, scaling, and management. You can find out more [here](https://kubernetes.io/)"
