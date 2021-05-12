@@ -5,7 +5,7 @@
 responses:
    utter_chitchat/greet: # multiple answers are allowed. Randombly picks one to answer
        - text: "Hi!" 
-       - text: "Hola 🙋‍♂️"
+       - text: "Hola 👋"
    utter_chitchat/soccer:
        - text: "I love soccer!"
 
