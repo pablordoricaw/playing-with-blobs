@@ -40,4 +40,5 @@ jobs:
           uses: azure/CLI@v1
           with:
             inlineScript: |
+              az extension add --name storage-preview
               az storage blob directory create -c chatbot -d ${{ github.event.repository.name }} --account-name storageaccpow --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }}
