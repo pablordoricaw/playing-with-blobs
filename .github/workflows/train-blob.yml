@@ -40,4 +40,4 @@ jobs:
           uses: azure/CLI@v1
           with:
             inlineScript: |
-              az storage fs directory create -f chatbot -n ${{ github.event.repository.name }} --account-name storageaccpow --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }}
+              az storage blob directory create -c chatbot -d ${{ github.event.repository.name }} --account-name storageaccpow --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }}
