@@ -13,7 +13,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  rasa-train:
+  rasa-train-&-upload:
     runs-on: ubuntu-latest
     env:
       MODEL_NAME: gary
@@ -29,42 +29,28 @@ jobs:
           publish_summary: false
           rasa_test: false
           train_args: --fixed-model-name ${{ env.MODEL_NAME }}
-      
-      - name: Finding nemo
-        shell: bash
-        run: |-
-          cd ${{ github.workspace }}
-          pwd
-          ls -la
-          
-          cd ${{ github.workspace }}/models/
-          pwd
-          ls -la
-        
+       
           
       - name: Azure Login
         run: 
-          az login --service-principal --username ${{ secrets.AZ_SP_APP_ID }} --password ${{ secrets.AZ_SP_PWD }} --tenant ${{secrets.AZ_SP_TENANT_ID }}
+          az login --service-principal \
+          --username ${{ secrets.AZ_SP_APP_ID }} \
+          --password ${{ secrets.AZ_SP_PWD }} \
+          --tenant ${{secrets.AZ_SP_TENANT_ID }}
 
-      - name: Finding Dory
-        shell: bash
-        run: |-
-          cd ${{ github.workspace }}
-          pwd
-          ls -la
-          
-          cd ${{ github.workspace }}/models/
-          pwd
-          ls -la
+      - name: az Container Creation
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az storage container create -n chatbot --account-name ${{ env.STORAGE_ACC_NAME }} --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }} --fail-on-exist
 
-#       - name: Azure CLI Container Creation
-#         uses: azure/CLI@v1
-#         with:
-#           inlineScript: |
-#             az storage container create -n chatbot --account-name ${{ env.STORAGE_ACC_NAME }} --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }} --fail-on-exist
-
-      - name: Azure CLI Upload Chatbot Artifact
-#         if: ${{ always() }}
+      - name: az Upload Chatbot Artifact
+        if: ${{ always() }}
         run: |-
           az extension add --name storage-preview
-          az storage blob upload -c chatbot -f ${{ github.workspace }}/models/${{ env.MODEL_NAME }}.tar.gz -n ${{ github.event.repository.name }}/${{ env.MODEL_NAME }} --account-name ${{ env.STORAGE_ACC_NAME }} --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }}
+          az storage blob upload \
+          -c chatbot \
+          -f ${{ github.workspace }}/models/${{ env.MODEL_NAME }}.tar.gz \
+          -n ${{ github.event.repository.name }}/${{ env.MODEL_NAME }}.tar.gz \
+          --account-name ${{ env.STORAGE_ACC_NAME }} \
+          --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }}
