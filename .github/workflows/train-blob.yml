@@ -40,5 +40,5 @@ jobs:
           uses: azure/CLI@v1
           with:
             inlineScript: |
-              az config set extension.use_dynamic_install=yes_without_prompt |
+              az config set extension.use_dynamic_install=yes_without_prompt 
               az storage blob directory create -c chatbot -d ${{ github.event.repository.name }} --account-name storageaccpow --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }} --fail-on-exist
