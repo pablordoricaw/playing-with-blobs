@@ -25,11 +25,12 @@ jobs:
 #           publish_summary: false
 #           rasa_test: false
           
-#       - name: Azure Login
-#         run: 
-#           az login --service-principal --username ${{ secrets.AZ_SP_APP_ID }} --password ${{ secrets.AZ_SP_PWD }} --tenant ${{secrets.AZ_SP_TENANT_ID }}
+        - name: Azure Login
+          run: 
+            az login --service-principal --username ${{ secrets.AZ_SP_APP_ID }} --password ${{ secrets.AZ_SP_PWD }} --tenant ${{secrets.AZ_SP_TENANT_ID }}
           
-        - name: Azure Login Action
-          uses: Azure/login@v1
+        - name: Azure CLI Blob Upload
+          uses: azure/CLI@v1
           with:
-            creds: ${{ secrets.AZ_SP_CREDS }}
+            inlineScript: |
+              az account show
