@@ -24,6 +24,7 @@ jobs:
         with:
           publish_summary: false
           rasa_test: false
+          train_args: "--fixed-model-name ${{ env.GITHUB_REPOSITORY }}-${{ env.GITHUB_SHA }}"
           
 #       - name: Azure Login
 #         run: 
@@ -41,4 +42,4 @@ jobs:
 #         with:
 #           inlineScript: |
 #             az extension add --name storage-preview
-#             az storage fs directory create -f chatbot -n ${{ github.event.repository.name }} --account-name storageaccpow --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }}
+#             az storage blob upload -c chatbot -f ${{ github.workspace }}/models/ -n ${{ github.event.repository.name }} --account-name storageaccpow --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }}
