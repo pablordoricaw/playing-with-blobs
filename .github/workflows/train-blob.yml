@@ -31,11 +31,9 @@ jobs:
           train_args: --fixed-model-name ${{ env.MODEL_NAME }}
        
       - name: Azure Login
+        shell: bash
         run: 
-          az login --service-principal \
-          --username ${{ secrets.AZ_SP_APP_ID }} \
-          --password ${{ secrets.AZ_SP_PWD }} \
-          --tenant ${{secrets.AZ_SP_TENANT_ID }}
+          az login --service-principal --username ${{ secrets.AZ_SP_APP_ID }} --password ${{ secrets.AZ_SP_PWD }} --tenant ${{secrets.AZ_SP_TENANT_ID }}
 
       - name: az Container Creation
         uses: azure/CLI@v1
@@ -45,11 +43,7 @@ jobs:
 
       - name: az Upload Chatbot Artifact
         if: ${{ always() }}
+        shell: bash
         run: |-
           az extension add --name storage-preview
-          az storage blob upload \
-          -c chatbot \
-          -f ${{ github.workspace }}/models/${{ env.MODEL_NAME }}.tar.gz \
-          -n ${{ github.event.repository.name }}/${{ env.MODEL_NAME }}.tar.gz \
-          --account-name ${{ env.STORAGE_ACC_NAME }} \
-          --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }}
+          az storage blob upload -c chatbot -f ${{ github.workspace }}/models/${{ env.MODEL_NAME }}.tar.gz -n ${{ github.event.repository.name }}/${{ env.MODEL_NAME }}.tar.gz --account-name ${{ env.STORAGE_ACC_NAME }} --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }}
