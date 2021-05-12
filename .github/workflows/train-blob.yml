@@ -26,12 +26,6 @@ jobs:
           rasa_test: false
           
       - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDS }}
+        run: 
+          az login --service-principal --username ${{ secrets.AZ_SP_APP_ID }} --password ${{ secrets.AZ_SP_PWD }} --tenant ${{secrets.AZ_SP_TENANT_ID }}
           
-      - name: Azure CLI Blob Upload
-        uses: azure/CLI@v1
-        with:
-          inlineScript: |
-            az storage fs file -h
