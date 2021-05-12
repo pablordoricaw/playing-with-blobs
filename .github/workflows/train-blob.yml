@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Rasa Train
-        uses: RasaHQ/rasa-train-test-gh@main
+        uses: RasaHQ/rasa-train-test-gha@main
         with:
           publish_summary: false
           rasa_test: false
