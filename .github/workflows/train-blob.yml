@@ -29,8 +29,14 @@ jobs:
           run: 
             az login --service-principal --username ${{ secrets.AZ_SP_APP_ID }} --password ${{ secrets.AZ_SP_PWD }} --tenant ${{secrets.AZ_SP_TENANT_ID }}
           
-        - name: Azure CLI Blob Upload
+        - name: Azure CLI Container Creation
           uses: azure/CLI@v1
           with:
             inlineScript: |
-              az account show
+              az storage container create \ 
+              --name chatbot \
+              --fail-on-exist \
+              --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }} \
+              --account-name storageaccpow \
+              --connection-string ${{ secrets.AZ_STORAGE_ACC_CONN_STRING }} \
+              --public-access off \
