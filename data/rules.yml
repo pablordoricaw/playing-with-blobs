@@ -1,0 +1,9 @@
+rules:
+- rule: faqs
+  steps:
+  - intent: faq
+  - action: utter_faq
+- rule: chitchat
+  steps:
+  - intent: chitchat
+  - action: utter_chitchat

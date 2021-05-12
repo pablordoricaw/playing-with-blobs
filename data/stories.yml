@@ -5,10 +5,10 @@
 # Chatbot replies with the answer to the question
 
 stories:
- - story: story 3
+ - story: faqs
    steps:
-   - intent: faq/container
-   - action: utter_faq/docker
+   - intent: faq
+   - action: utter_faq
 
 # Keywords:
 # stories -> refers to the list of stories
