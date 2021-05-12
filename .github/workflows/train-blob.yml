@@ -15,6 +15,10 @@ on:
 jobs:
   rasa-train:
     runs-on: ubuntu-latest
+    env:
+      MODEL_NAME: ${{ github.repository }}-${{ github.sha }}
+      STORAGE_ACC_NAME: storageaccpow
+      
     steps:
       - name: Checkout master branch
         uses: actions/checkout@v2
@@ -24,22 +28,22 @@ jobs:
         with:
           publish_summary: false
           rasa_test: false
-          train_args: --fixed-model-name ${{ github.repository }}-${{ github.sha }}
+          train_args: --fixed-model-name ${{ env.MODEL_NAME }}
           
-#       - name: Azure Login
-#         run: 
-#           az login --service-principal --username ${{ secrets.AZ_SP_APP_ID }} --password ${{ secrets.AZ_SP_PWD }} --tenant ${{secrets.AZ_SP_TENANT_ID }}
+      - name: Azure Login
+        run: 
+          az login --service-principal --username ${{ secrets.AZ_SP_APP_ID }} --password ${{ secrets.AZ_SP_PWD }} --tenant ${{secrets.AZ_SP_TENANT_ID }}
 
-#       - name: Azure CLI Container Creation
-#         uses: azure/CLI@v1
-#         with:
-#           inlineScript: |
-#             az storage container create -n chatbot --account-name storageaccpow --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }} --fail-on-exist
+      - name: Azure CLI Container Creation
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az storage container create -n chatbot --account-name ${{ env.STORAGE_ACC_NAME }} --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }} --fail-on-exist
 
-#       - name: Azure CLI Directory Creation
-#         if: ${{ always() }}
-#         uses: azure/CLI@v1
-#         with:
-#           inlineScript: |
-#             az extension add --name storage-preview
-#             az storage blob upload -c chatbot -f ${{ github.workspace }}/models/ -n ${{ github.event.repository.name }} --account-name storageaccpow --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }}
+      - name: Azure CLI Directory Creation
+        if: ${{ always() }}
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az extension add --name storage-preview
+            az storage blob upload -c chatbot -f ${{ github.workspace }}/models/${{ env.MODEL_NAME }} -n ${{ github.repository }}/${{ env.MODEL_NAME }} --account-name ${{ env.STORAGE_ACC_NAME }} --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }}
