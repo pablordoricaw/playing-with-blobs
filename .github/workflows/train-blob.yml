@@ -24,7 +24,7 @@ jobs:
         with:
           publish_summary: false
           rasa_test: false
-          train_args: --fixed-model-name ${{ env.GITHUB_REPOSITORY - env.GITHUB_SHA }}
+          train_args: --fixed-model-name ${{ github.repository }}-${{ github.sha }}
           
 #       - name: Azure Login
 #         run: 
