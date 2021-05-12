@@ -33,4 +33,4 @@ jobs:
           uses: azure/CLI@v1
           with:
             inlineScript: |
-              az account show
+              az storage account list --resource-group RG-1
