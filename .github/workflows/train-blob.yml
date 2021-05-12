@@ -33,10 +33,4 @@ jobs:
           uses: azure/CLI@v1
           with:
             inlineScript: |
-              az storage container create | 
-              --name chatbot |
-              --fail-on-exist |
-              --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }} |
-              --account-name storageaccpow |
-              --connection-string ${{ secrets.AZ_STORAGE_ACC_CONN_STRING }} |
-              --public-access off 
+              az storage container create --name chatbot --fail-on-exist --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }} --account-name storageaccpow  --connection-string ${{ secrets.AZ_STORAGE_ACC_CONN_STRING }} --public-access off 
