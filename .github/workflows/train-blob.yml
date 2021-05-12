@@ -16,7 +16,7 @@ jobs:
   rasa-train:
     runs-on: ubuntu-latest
     env:
-      MODEL_NAME: ${{ github.event.repository.name }}-${{ github.sha }}
+      MODEL_NAME: gary
       STORAGE_ACC_NAME: storageaccpow
       
     steps:
