@@ -36,6 +36,7 @@ jobs:
               az storage container create -n chatbot --account-name storageaccpow --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }} --fail-on-exist
 
         - name: Azure CLI Directory Creation
+          if: ${{ always() }}
           uses: azure/CLI@v1
           with:
             inlineScript: |
