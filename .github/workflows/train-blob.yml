@@ -16,7 +16,7 @@ jobs:
   rasa-train:
     runs-on: ubuntu-latest
     env:
-      MODEL_NAME: ${{ github.repository }}-${{ github.sha }}
+      MODEL_NAME: ${{ github.event.repository.name }}-${{ github.sha }}
       STORAGE_ACC_NAME: storageaccpow
       
     steps:
@@ -46,4 +46,4 @@ jobs:
         with:
           inlineScript: |
             az extension add --name storage-preview
-            az storage blob upload -c chatbot -f /app/models/${{ env.MODEL_NAME }} -n ${{ github.repository.name }}/${{ env.MODEL_NAME }} --account-name ${{ env.STORAGE_ACC_NAME }} --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }}
+            az storage blob upload -c chatbot -f /app/models/${{ env.MODEL_NAME }} -n ${{ github.event.repository.name }}/${{ env.MODEL_NAME }} --account-name ${{ env.STORAGE_ACC_NAME }} --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }}
