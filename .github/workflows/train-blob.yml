@@ -33,4 +33,4 @@ jobs:
           uses: azure/CLI@v1
           with:
             inlineScript: |
-              az storage container create --name chatbot --connection-string ${{ secrets.AZ_STORAGE_ACC_CONN_STRING }} --resource-group RG-1
+              az account show
