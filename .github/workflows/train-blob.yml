@@ -6,7 +6,7 @@ name: Train Rasa Chatbot and Upload Artifacts to Azure Blob
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ master ]
+    branches: [ develop ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -35,11 +35,11 @@ jobs:
         run: 
           az login --service-principal --username ${{ secrets.AZ_SP_APP_ID }} --password ${{ secrets.AZ_SP_PWD }} --tenant ${{secrets.AZ_SP_TENANT_ID }}
 
-      - name: az Container Creation
-        uses: azure/CLI@v1
-        with:
-          inlineScript: |
-            az storage container create -n chatbot --account-name ${{ env.STORAGE_ACC_NAME }} --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }} --fail-on-exist
+#       - name: az Container Creation
+#         uses: azure/CLI@v1
+#         with:
+#           inlineScript: |
+#             az storage container create -n chatbot --account-name ${{ env.STORAGE_ACC_NAME }} --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }} --fail-on-exist
 
       - name: az Upload Chatbot Artifact
         if: ${{ always() }}
