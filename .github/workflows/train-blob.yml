@@ -46,4 +46,4 @@ jobs:
         with:
           inlineScript: |
             az extension add --name storage-preview
-            az storage blob upload -c chatbot -f /app/models/${{ env.MODEL_NAME }}.tar.gz -n ${{ github.event.repository.name }}/${{ env.MODEL_NAME }} --account-name ${{ env.STORAGE_ACC_NAME }} --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }}
+            az storage blob upload -c chatbot -f ${{ github.workspace }}/models/${{ env.MODEL_NAME }}.tar.gz -n ${{ github.event.repository.name }}/${{ env.MODEL_NAME }} --account-name ${{ env.STORAGE_ACC_NAME }} --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }}
