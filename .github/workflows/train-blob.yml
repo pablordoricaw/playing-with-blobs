@@ -52,4 +52,4 @@ jobs:
         shell: bash
         run: |-
           az extension add --name storage-preview
-          az storage blob upload -c chatbot -f ${{ github.workspace }}/models/${{ github.actor }}-${{ env.TIMESTAMP }}.tar.gz -n ${{ github.event.repository.name }}/${{ github.actor }}-${{ env.TIMESTAMP }}.tar.gz --account-name ${{ env.STORAGE_ACC_NAME }} --account-key ${{ secrets.AZ_STORAGE_ACC_KEY }}
+          az storage blob upload -c chatbot -f ${{ github.workspace }}/models/${{ github.actor }}-${{ env.TIMESTAMP }}.tar.gz -n ${{ github.event.repository.name }}/${{ github.actor }}-${{ env.TIMESTAMP }}.tar.gz --connection-string ${{ secrets.AZ_STORAGE_ACC_CONN_STRING }}
