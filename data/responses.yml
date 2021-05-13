@@ -4,7 +4,7 @@
 #    - text: "{response for the intent}"
 responses:
    utter_chitchat/greet: # multiple answers are allowed. Randombly picks one to answer
-       - text: "Hi!" 
+       - text: "Bonjour!" 
        - text: "Hola 👋"
    utter_chitchat/soccer:
        - text: "I love soccer! My fave team is West Ham"
