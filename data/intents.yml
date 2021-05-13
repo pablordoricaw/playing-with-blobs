@@ -17,7 +17,18 @@ nlu:
     - Bonjour
     - bonjour monsieur
     - halo
-
+    
+- intent: chitchat/bye
+  examples: |
+    - Bye
+    - bye
+    - Good bye
+    - Have a good one
+    - See ya
+    - Have a nice day
+    - Till next time
+    - Thanks, bye
+    
 - intent: chitchat/soccer
   examples: |
      - Do you like soccer?
