@@ -8,6 +8,8 @@ responses:
        - text: "Hola 👋"
    utter_chitchat/soccer:
        - text: "I love soccer! My fave team is West Ham"
+   utter_chitchat/bye:
+       - text: "Peace out homie!"
 
    utter_faq/container:
        - text: "A container is a standard unit of software that packages up code and all its dependencies so the 
