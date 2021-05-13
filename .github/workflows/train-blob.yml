@@ -32,7 +32,7 @@ jobs:
         shell: bash
         run: |-
           az extension add --name storage-preview
-          az storage blob upload -c chatbot -f ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz -n ${{ github.event.repository.name }}/${{ env.CHATBOT_MODEL_NAME }}.tar.gz a
+          az storage blob upload -c chatbot -f ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz -n ${{ github.event.repository.name }}/${{ env.CHATBOT_MODEL_NAME }}.tar.gz
 
       - name: List blobs in container
         shell: bash
