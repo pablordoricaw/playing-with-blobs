@@ -18,7 +18,7 @@ jobs:
     env:
       STORAGE_ACC_NAME: storageaccpow
       AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZ_STORAGE_ACC_CONN_STRING }}
-      CHATBOT_MODEL_NAME: ${{ github.event.repository.name }}-${{ githb.event.pull_request.number }}
+      CHATBOT_MODEL_NAME: ${{ github.event.repository.name }}-${{ github.event.pull_request.number }}
       
     steps:
       - name: Event what?
