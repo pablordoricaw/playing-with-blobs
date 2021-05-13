@@ -5,8 +5,10 @@ name: Train Rasa Chatbot and Upload Artifacts to Azure Blob
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-    branches: [ develop ]
+#   push:
+#     branches: [ develop ]
+  pull_request:
+    types: [closed]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
