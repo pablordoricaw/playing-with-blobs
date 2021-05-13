@@ -14,6 +14,8 @@ nlu:
     - Hola!
     - Hi my name is [Pablo](name)
     - Hey my name is [Pablo Ordorica](name)
+    - Bonjour
+    - bonjour monsieur
 
 - intent: chitchat/soccer
   examples: |
