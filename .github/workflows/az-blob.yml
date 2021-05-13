@@ -17,4 +17,4 @@ jobs:
       - name: List blobs in container
         shell: bash
         run: |- 
-          az storage blob list -c chatbot --prefix ${{ github.event.repository.name }}/ --query "[].[name, properties.creationTime]"
+          az storage blob list -c chatbot --prefix ${{ github.event.repository.name }}/ --query "[].name, properties.creationTime"
