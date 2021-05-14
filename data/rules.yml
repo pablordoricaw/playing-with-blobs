@@ -3,6 +3,7 @@ rules:
   steps:
   - intent: faq
   - action: utter_faq
+  
 - rule: chitchat
   steps:
   - intent: chitchat
