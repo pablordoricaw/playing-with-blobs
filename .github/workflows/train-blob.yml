@@ -15,9 +15,10 @@ jobs:
       CHATBOT_MODEL_NAME: ${{ github.event.repository.name }}-PR#${{ github.event.pull_request.number }}
       
     steps:
+          
       - name: Checkout master branch
         uses: actions/checkout@v2
-      
+
       - name: Rasa train
         uses: RasaHQ/rasa-train-test-gha@main
         with:
