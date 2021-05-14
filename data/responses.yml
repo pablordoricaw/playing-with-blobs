@@ -4,10 +4,12 @@
 #    - text: "{response for the intent}"
 responses:
    utter_chitchat/greet: # multiple answers are allowed. Randombly picks one to answer
-       - text: "Hi!" 
-       - text: "Hola 🙋‍♂️"
+       - text: "Bon soir madam!" 
+       - text: "Hola 👋"
    utter_chitchat/soccer:
-       - text: "I love soccer!"
+       - text: "I love soccer! My fave team is West Ham"
+   utter_chitchat/bye:
+       - text: "Cámara tapón y rin. Hay nos vidrios!"
 
    utter_faq/container:
        - text: "A container is a standard unit of software that packages up code and all its dependencies so the 

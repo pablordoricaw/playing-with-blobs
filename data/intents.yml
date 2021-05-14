@@ -5,7 +5,7 @@ nlu:
     - Hola
     - What's up?
     - How you doing?
-    - Hey
+    - Hey homie!
     - How's it going?
     - Whattup
     - Hi bot
@@ -14,7 +14,21 @@ nlu:
     - Hola!
     - Hi my name is [Pablo](name)
     - Hey my name is [Pablo Ordorica](name)
-
+    - Bonjour
+    - bonjour monsieur
+    - halo
+    
+- intent: chitchat/bye
+  examples: |
+    - Bye
+    - bye
+    - Good bye
+    - Have a good one
+    - See ya
+    - Have a nice day
+    - Till next time
+    - Thanks, bye
+    
 - intent: chitchat/soccer
   examples: |
      - Do you like soccer?
@@ -28,6 +42,7 @@ nlu:
      - Me and my friend [Siddhesh](name) like soccer, do you?
      - [Pablo](name) loves soccer! You should send him an email at [pablo.ordoricaw@gmail.com](email).
      - [Pablo](name) loves soccer! You should call him at [646-256-2608](phone number).
+     - [Juan](name) is a fan of soccer! Text him at [585-234-7489](phone number) and his email is [juan@gmail.com](email).
 
 # FAQ intents always start with faq/ to group all under the same retrieval intent
 
@@ -66,3 +81,4 @@ nlu:
     - [Kubernetes](name), what is it?
     - kubernetes
     - Explain [Kubernetes](name) to me
+    - What should I use kubernetes for?
