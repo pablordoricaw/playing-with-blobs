@@ -43,7 +43,7 @@ jobs:
       - name: Download Chatbot Artifact from GitHub
         uses: actions/download-artifact@v2
         with:
-          name: ${{ env.CHATBOT_MODEL_NAME }}
+          name: ${{ env.CHATBOT_MODEL_NAME }}.tar.gz
           
       - name: Upload chatbot artifact to Azure container
         shell: bash
