@@ -19,12 +19,12 @@ jobs:
       - name: Checkout master branch
         uses: actions/checkout@v2
 
-      - name: Rasa train
-        uses: RasaHQ/rasa-train-test-gha@main
-        with:
-          publish_summary: false
-          rasa_test: false
-          train_args: --fixed-model-name ${{ env.CHATBOT_MODEL_NAME }}
+#       - name: Rasa train
+#         uses: RasaHQ/rasa-train-test-gha@main
+#         with:
+#           publish_summary: false
+#           rasa_test: false
+#           train_args: --fixed-model-name ${{ env.CHATBOT_MODEL_NAME }}
           
       - name: Upload Chatbot Artifact to GitHub
         uses: actions/upload-artifact@v2.2.3
