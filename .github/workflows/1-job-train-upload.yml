@@ -18,9 +18,11 @@ jobs:
       - name: Rasa train
         uses: RasaHQ/rasa-train-test-gha@main
         with:
+          rasa_version: latest-full
           publish_summary: false
           rasa_test: false
           train_args: --fixed-model-name ${{ env.CHATBOT_MODEL_NAME }}
+          configuration: config.yml
           
       - name: Where did the chatbot go?
         shell: bash
