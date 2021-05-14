@@ -9,14 +9,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  rasa-train-and-upload:
+  rasa-train:
     runs-on: ubuntu-latest
     env:
-      AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZ_STORAGE_ACC_CONN_STRING }}
-      CHATBOT_MODEL_NAME: ${{ github.event.repository.name }}-${{ github.event.pull_request.number }}
+      CHATBOT_MODEL_NAME: ${{ github.event.repository.name }}-PR#${{ github.event.pull_request.number }}
       
     steps:
-          
       - name: Checkout master branch
         uses: actions/checkout@v2
       
@@ -26,16 +24,32 @@ jobs:
           publish_summary: false
           rasa_test: false
           train_args: --fixed-model-name ${{ env.CHATBOT_MODEL_NAME }}
-       
+          
+      - name: Upload Chatbot Artifact to GitHub
+        uses: actions/upload-artifact@v2.2.3
+        with:
+          name: ${{ CHATBOT_MODEL_NAME }}.tar.gz
+          path: ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz
+          if-no-files-found: error
+          retention-days: 1
+          
+  blob-upload:
+    runs-on: ubuntu-latest
+    needs: rasa-train
+    env:
+      AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZ_STORAGE_ACC_CONN_STRING }}
+      CHATBOT_MODEL_NAME: ${{ github.event.repository.name }}-PR#${{ github.event.pull_request.number }}
+    steps:
+      - name: Download Chatbot Artifact from GitHub
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ env.CHATBOT_MODEL_NAME }}
+          
       - name: Upload chatbot artifact to Azure container
         shell: bash
         run: |
           az storage blob upload \
           -c chatbot \
-          -f ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz \
+          -f ./${{ env.CHATBOT_MODEL_NAME }}.tar.gz \
           -n ${{ github.event.repository.name }}/${{ env.CHATBOT_MODEL_NAME }}.tar.gz
 
-      - name: List blobs in container
-        shell: bash
-        run: |- 
-          az storage blob list -c chatbot --prefix ${{ github.event.repository.name }}/
