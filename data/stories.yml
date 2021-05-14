@@ -2,8 +2,6 @@
 stories:
  - story: faqs
    steps:
-   - intent: chitchat
-   - action: utter_chitchat
    - intent: faq
    - action: utter_faq
 
