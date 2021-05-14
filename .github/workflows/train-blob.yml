@@ -12,7 +12,6 @@ jobs:
   rasa-train-and-upload:
     runs-on: ubuntu-latest
     env:
-      STORAGE_ACC_NAME: storageaccpow
       AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZ_STORAGE_ACC_CONN_STRING }}
       CHATBOT_MODEL_NAME: ${{ github.event.repository.name }}-${{ github.event.pull_request.number }}
       
@@ -30,9 +29,11 @@ jobs:
        
       - name: Upload chatbot artifact to Azure container
         shell: bash
-        run: |-
-          az extension add --name storage-preview
-          az storage blob upload -c chatbot -f ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz -n ${{ github.event.repository.name }}/${{ env.CHATBOT_MODEL_NAME }}.tar.gz
+        run: |
+          az storage blob upload \
+          -c chatbot \
+          -f ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz \
+          -n ${{ github.event.repository.name }}/${{ env.CHATBOT_MODEL_NAME }}.tar.gz
 
       - name: List blobs in container
         shell: bash
