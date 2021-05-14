@@ -22,6 +22,27 @@ jobs:
           rasa_test: false
           train_args: --fixed-model-name ${{ env.CHATBOT_MODEL_NAME }}
           
+      - name: Where did the chatbot go?
+        shell: bash
+        run: |
+          echo "pwd" && pwd
+          echo "------"
+          echo "ls -la" && ls -la
+          echo "------"
+          echo "cd ${{ github.workspace }}/models" && cd ${{ github.workspace }}/models
+          echo "------"
+          echo "pwd" && pwd
+          echo "------"
+          echo "ls -la" && ls -la
+          
+      - name: Upload Chatbot Artifact to GitHub
+        uses: actions/upload-artifact@v2.2.3
+        with:
+          name: ${{ env.CHATBOT_MODEL_NAME }}.tar.gz
+          path: ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz
+          if-no-files-found: error
+          retention-days: 1
+          
       - name: Upload chatbot artifact to Azure container
         shell: bash
         run: |
