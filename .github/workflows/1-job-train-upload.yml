@@ -24,11 +24,6 @@ jobs:
           train_args: --fixed-model-name ${{ env.CHATBOT_MODEL_NAME }}
           configuration: config.yml
           
-      - name: Rasa version
-        shell: bash
-        run: |
-          rasa --version
-          
       - name: Where did the chatbot go?
         shell: bash
         run: |
