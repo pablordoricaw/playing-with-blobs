@@ -17,6 +17,7 @@ nlu:
     - Bonjour
     - bonjour monsieur
     - halo
+    - Yo yo yo whattup
     
 - intent: chitchat/bye
   examples: |
