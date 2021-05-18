@@ -7,7 +7,7 @@ on:
       - develop
 env:
   AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZ_STORAGE_ACC_CONN_STRING }}
-  CHATBOT_MODEL_NAME: ${{ github.event.repository.name }}-PR-${{ github.event.pull_request.number }}-2-jobs
+  CHATBOT_MODEL_NAME: ${{ github.event.repository.name }}-PR-${{ github.event.pull_request.number }}
 jobs:
   rasa-train:
     runs-on: ubuntu-latest
@@ -15,12 +15,12 @@ jobs:
       - name: Checkout master branch
         uses: actions/checkout@v2
 
-#       - name: Rasa train
-#         uses: RasaHQ/rasa-train-test-gha@main
-#         with:
-#           publish_summary: false
-#           rasa_test: false
-#           train_args: --fixed-model-name ${{ env.CHATBOT_MODEL_NAME }}
+      - name: Rasa train
+        uses: RasaHQ/rasa-train-test-gha@main
+        with:
+          publish_summary: false
+          rasa_test: false
+          train_args: --fixed-model-name ${{ env.CHATBOT_MODEL_NAME }}
       
       - name: Caching chatbot
         uses: actions/cache@v2
@@ -28,23 +28,10 @@ jobs:
           path: ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz
           key: ${{ env.CHATBOT_MODEL_NAME }}.tar.gz
           
-#       - name: Upload Chatbot Artifact to GitHub
-#         uses: actions/upload-artifact@v2.2.3
-#         with:
-#           name: ${{ env.CHATBOT_MODEL_NAME }}.tar.gz
-#           path: ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz
-#           if-no-files-found: error
-#           retention-days: 1
-          
   blob-upload:
     runs-on: ubuntu-latest
     needs: rasa-train
     steps:
-#       - name: Download Chatbot Artifact from GitHub
-#         uses: actions/download-artifact@v2
-#         with:
-#           name: ${{ env.CHATBOT_MODEL_NAME }}.tar.gz
-#           path: ${{ github.workspace }}
 
       - name: Get cached chatbot
         uses: actions/cache@v2
@@ -58,4 +45,43 @@ jobs:
           az storage blob upload \
           -c chatbot \
           -f ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz \
-          -n ${{ github.event.repository.name }}/${{ env.CHATBOT_MODEL_NAME }}.tar.gz
+          -n ${{ github.event.repository.name }}/${{ env.CHATBOT_MODEL_NAME }}-cache.tar.gz
+          
+  rasa-train-artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master branch
+        uses: actions/checkout@v2
+
+      - name: Rasa train
+        uses: RasaHQ/rasa-train-test-gha@main
+        with:
+          publish_summary: false
+          rasa_test: false
+          train_args: --fixed-model-name ${{ env.CHATBOT_MODEL_NAME }}
+          
+      - name: Upload Chatbot Artifact to GitHub
+        uses: actions/upload-artifact@v2.2.3
+        with:
+          name: ${{ env.CHATBOT_MODEL_NAME }}.tar.gz
+          path: ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz
+          if-no-files-found: error
+          retention-days: 1
+          
+  blob-upload-artifact:
+    runs-on: ubuntu-latest
+    needs: rasa-train-artifact
+    steps:
+      - name: Download Chatbot Artifact from GitHub
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ env.CHATBOT_MODEL_NAME }}.tar.gz
+          path: ${{ github.workspace }}
+  
+      - name: Upload chatbot artifact to Azure container
+        shell: bash
+        run: |
+          az storage blob upload \
+          -c chatbot \
+          -f ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz \
+          -n ${{ github.event.repository.name }}/${{ env.CHATBOT_MODEL_NAME }}-artifact.tar.gz
