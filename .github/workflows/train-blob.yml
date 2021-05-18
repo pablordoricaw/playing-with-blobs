@@ -57,5 +57,5 @@ jobs:
         run: |
           az storage blob upload \
           -c chatbot \
-          -f ./${{ env.CHATBOT_MODEL_NAME }}.tar.gz \
+          -f ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz \
           -n ${{ github.event.repository.name }}/${{ env.CHATBOT_MODEL_NAME }}.tar.gz
