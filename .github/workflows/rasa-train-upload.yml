@@ -49,7 +49,7 @@ jobs:
           az storage blob upload \
           -c chatbot \
           -f ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz \
-          -n ${{ github.event.repository.name }}/${{ env.CHATBOT_MODEL_NAME }}-cache.tar.gz
+          -n ${{ github.event.repository.name }}/${{ env.CHATBOT_MODEL_NAME }}.tar.gz
    
   container-3-chatbots:
     runs-on: ubuntu-latest
@@ -67,7 +67,7 @@ jobs:
           )"
           
       - name: If there's already 3 trained models, find the oldest
-        if: ${{ steps.get_dir_len.outputs.DIR_LEN >= env.NUMBER_MODELS_SAVED }}
+        if: ${{ steps.get_dir_len.outputs.DIR_LEN > env.NUMBER_MODELS_SAVED }}
         id: get_oldest_model
         shell: bash
         run: |
@@ -79,7 +79,7 @@ jobs:
           )"
       
       - name: If there's already 3 trained models, delete oldest blob
-        if: ${{ steps.get_dir_len.outputs.DIR_LEN >= env.NUMBER_MODELS_SAVED }}
+        if: ${{ steps.get_dir_len.outputs.DIR_LEN > env.NUMBER_MODELS_SAVED }}
         shell: bash
         run: |
           az storage blob delete \
