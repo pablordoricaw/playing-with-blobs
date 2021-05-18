@@ -8,6 +8,9 @@ on:
 env:
   AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZ_STORAGE_ACC_CONN_STRING }}
   CHATBOT_MODEL_NAME: ${{ github.event.repository.name }}-PR-${{ github.event.pull_request.number }}
+  CONTAINER_NAME: chatbot
+  NUMBER_MODELS_SAVED: 3
+  
 jobs:
   rasa-train:
     runs-on: ubuntu-latest
