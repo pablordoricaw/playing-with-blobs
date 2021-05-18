@@ -85,3 +85,21 @@ jobs:
           az storage blob delete \
             -c ${{ env.CONTAINER_NAME }} \
             -n "${{ steps.get_oldest_model.outputs.OLDEST_MODEL_NAME }}"
+            
+      # New additions for custom action
+      - name: Checkout current branch
+        uses: actions/checkout@v2
+
+      - name: Setup for custom action
+        run: |
+          cd .github/actions/LimitTrainedModels
+          npm init -y
+          npm install @actions/core
+          npm install @azure/storage-blob
+      - name: Call custom action
+        uses: ./.github/actions/LimitTrainedModels
+        with:
+          connection-string: ${{ secrets.BLOB_CONTAINER_CONNECT_STRING }}
+          container-name: ${{ env.CONTAINER_NAME }}
+          branch-name: ${{ github.event.repository.name }}
+          max-saved-models: ${{ env.NUMBER_MODELS_SAVED }}
