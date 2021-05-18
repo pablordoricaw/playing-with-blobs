@@ -1,6 +1,7 @@
 # Playing with Blobs
 
-| Round | Artifact | Cache  |
-| ----- | -------- | -----  |
-| 1.    | train    | upload |
-| 2.    |          |        |
+| Round | Artifact | Cache  | Total    |
+| ----- | -------- | -----  | -------- |
+| 1.    | train    | upload | artifact |
+| 2.    | tr & up  |        | artifact |
+| 3.    |          |        |          |
