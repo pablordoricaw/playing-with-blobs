@@ -1,0 +1,84 @@
+name: Train Rasa chatbot & upload to Azure Blob storage
+on:
+
+  pull_request:
+    types: [closed]
+    branches:
+      - develop
+env:
+  AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZ_STORAGE_ACC_CONN_STRING }}
+  CHATBOT_MODEL_NAME: ${{ github.event.repository.name }}-PR-${{ github.event.pull_request.number }}
+jobs:
+  rasa-train:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master branch
+        uses: actions/checkout@v2
+
+      - name: Rasa train
+        uses: RasaHQ/rasa-train-test-gha@main
+        with:
+          publish_summary: false
+          rasa_test: false
+          train_args: --fixed-model-name ${{ env.CHATBOT_MODEL_NAME }}
+      
+      - name: Caching chatbot
+        uses: actions/cache@v2
+        with:
+          path: ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz
+          key: ${{ env.CHATBOT_MODEL_NAME }}.tar.gz
+          
+  blob-upload:
+    runs-on: ubuntu-latest
+    needs: rasa-train
+    steps:
+
+      - name: Get cached chatbot
+        id: get-cached-chatbot
+        uses: actions/cache@v2
+        with:
+          path: ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz
+          key: ${{ env.CHATBOT_MODEL_NAME }}.tar.gz
+          
+      - name: Upload chatbot artifact to Azure container
+        shell: bash
+        run: |
+          az storage blob upload \
+          -c chatbot \
+          -f ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz \
+          -n ${{ github.event.repository.name }}/${{ env.CHATBOT_MODEL_NAME }}-cache.tar.gz
+   
+  container-3-chatbots:
+    runs-on: ubuntu-latest
+    needs: blob-upload
+    steps:
+      - name: Get number of blobs in ${{ github.event.repository.name }}
+        id: get_dir_len
+        shell: bash
+        run: |
+          echo "::set-output name=DIR_LEN::$( \
+            az storage blob list \
+              -c ${{ env.CONTAINER_NAME }} \
+              --prefix "${{ github.event.repository.name }}/" \
+              --query "length([].{Name:name, Creation:properties.creationTime})" \
+          )"
+          
+      - name: If there's already 3 trained models, find the oldest
+        if: ${{ steps.get_dir_len.outputs.DIR_LEN >= env.NUMBER_MODELS_SAVED }}
+        id: get_oldest_model
+        shell: bash
+        run: |
+          echo "::set-output name=OLDEST_MODEL_NAME::$( \
+            az storage blob list \
+              -c ${{ env.CONTAINER_NAME }} \
+              --prefix "${{ github.event.repository.name }}/" \
+              --query "min_by([].{Name:name, Creation_Date:properties.creationTime}, &Creation_Date).Name" \
+          )"
+      
+      - name: If there's already 3 trained models, delete oldest blob
+        if: ${{ steps.get_dir_len.outputs.DIR_LEN >= env.NUMBER_MODELS_SAVED }}
+        shell: bash
+        run: |
+          az storage blob delete \
+            -c ${{ env.CONTAINER_NAME }} \
+            -n "${{ steps.get_oldest_model.outputs.OLDEST_MODEL_NAME }}"
