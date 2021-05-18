@@ -9,43 +9,43 @@ env:
   AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZ_STORAGE_ACC_CONN_STRING }}
   CHATBOT_MODEL_NAME: ${{ github.event.repository.name }}-PR-${{ github.event.pull_request.number }}
 jobs:
-  rasa-train:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout master branch
-        uses: actions/checkout@v2
+#   rasa-train-cache:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout master branch
+#         uses: actions/checkout@v2
 
-      - name: Rasa train
-        uses: RasaHQ/rasa-train-test-gha@main
-        with:
-          publish_summary: false
-          rasa_test: false
-          train_args: --fixed-model-name ${{ env.CHATBOT_MODEL_NAME }}
+#       - name: Rasa train
+#         uses: RasaHQ/rasa-train-test-gha@main
+#         with:
+#           publish_summary: false
+#           rasa_test: false
+#           train_args: --fixed-model-name ${{ env.CHATBOT_MODEL_NAME }}
       
-      - name: Caching chatbot
-        uses: actions/cache@v2
-        with:
-          path: ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz
-          key: ${{ env.CHATBOT_MODEL_NAME }}.tar.gz
+#       - name: Caching chatbot
+#         uses: actions/cache@v2
+#         with:
+#           path: ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz
+#           key: ${{ env.CHATBOT_MODEL_NAME }}.tar.gz
           
-  blob-upload-cache:
-    runs-on: ubuntu-latest
-    needs: rasa-train
-    steps:
+#   blob-upload-cache:
+#     runs-on: ubuntu-latest
+#     needs: rasa-train-cache
+#     steps:
 
-      - name: Get cached chatbot
-        uses: actions/cache@v2
-        with:
-          path: ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz
-          key: ${{ env.CHATBOT_MODEL_NAME }}.tar.gz
+#       - name: Get cached chatbot
+#         uses: actions/cache@v2
+#         with:
+#           path: ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz
+#           key: ${{ env.CHATBOT_MODEL_NAME }}.tar.gz
           
-      - name: Upload chatbot artifact to Azure container
-        shell: bash
-        run: |
-          az storage blob upload \
-          -c chatbot \
-          -f ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz \
-          -n ${{ github.event.repository.name }}/${{ env.CHATBOT_MODEL_NAME }}-cache.tar.gz
+#       - name: Upload chatbot artifact to Azure container
+#         shell: bash
+#         run: |
+#           az storage blob upload \
+#           -c chatbot \
+#           -f ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz \
+#           -n ${{ github.event.repository.name }}/${{ env.CHATBOT_MODEL_NAME }}-cache.tar.gz
           
   rasa-train-artifact:
     runs-on: ubuntu-latest
