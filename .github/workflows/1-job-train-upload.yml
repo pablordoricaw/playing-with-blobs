@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [closed]
     branches:
-      - develop
+      - master
 env:
   AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZ_STORAGE_ACC_CONN_STRING }}
   CHATBOT_MODEL_NAME: ${{ github.event.repository.name }}-PR-${{ github.event.pull_request.number }}-1-job
