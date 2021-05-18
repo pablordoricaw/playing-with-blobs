@@ -9,7 +9,7 @@ env:
   AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZ_STORAGE_ACC_CONN_STRING }}
   CHATBOT_MODEL_NAME: ${{ github.event.repository.name }}-PR-${{ github.event.pull_request.number }}
 jobs:
-  rasa-train:
+  rasa-train-cache:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout master branch
@@ -28,9 +28,9 @@ jobs:
           path: ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz
           key: ${{ env.CHATBOT_MODEL_NAME }}.tar.gz
           
-  blob-upload:
+  blob-upload-cache:
     runs-on: ubuntu-latest
-    needs: rasa-train
+    needs: rasa-train-cache
     steps:
 
       - name: Get cached chatbot
@@ -83,5 +83,5 @@ jobs:
         run: |
           az storage blob upload \
           -c chatbot \
-          -f ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz \
+          -f ./${{ env.CHATBOT_MODEL_NAME }}.tar.gz \
           -n ${{ github.event.repository.name }}/${{ env.CHATBOT_MODEL_NAME }}-artifact.tar.gz
