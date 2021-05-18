@@ -15,12 +15,12 @@ jobs:
       - name: Checkout master branch
         uses: actions/checkout@v2
 
-      - name: Rasa train
-        uses: RasaHQ/rasa-train-test-gha@main
-        with:
-          publish_summary: false
-          rasa_test: false
-          train_args: --fixed-model-name ${{ env.CHATBOT_MODEL_NAME }}
+#       - name: Rasa train
+#         uses: RasaHQ/rasa-train-test-gha@main
+#         with:
+#           publish_summary: false
+#           rasa_test: false
+#           train_args: --fixed-model-name ${{ env.CHATBOT_MODEL_NAME }}
       
       - name: Caching chatbot
         uses: actions/cache@v2
@@ -34,12 +34,14 @@ jobs:
     steps:
 
       - name: Get cached chatbot
+        id: get-cached-chatbot
         uses: actions/cache@v2
         with:
           path: ${{ github.workspace }}/models/${{ env.CHATBOT_MODEL_NAME }}.tar.gz
           key: ${{ env.CHATBOT_MODEL_NAME }}.tar.gz
           
       - name: Upload chatbot artifact to Azure container
+        if: steps.get-cached-chatbot.outputs.cache-hit == 'true'
         shell: bash
         run: |
           az storage blob upload \
