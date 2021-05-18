@@ -1,4 +1,4 @@
-name: Train Rasa Chatbot and Upload Artifacts to Azure Blob
+name: Artifact
 on:
 
   pull_request:
