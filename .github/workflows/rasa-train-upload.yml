@@ -12,6 +12,7 @@ env:
   NUMBER_MODELS_SAVED: 3
   
 jobs:
+  if: ${{ github.event.pull_request.merged }} == 'true'
   rasa-train:
     runs-on: ubuntu-latest
     steps:
