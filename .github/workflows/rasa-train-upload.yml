@@ -13,6 +13,7 @@ env:
   
 jobs:
   rasa-train:
+    if: github.event.pull_request.merged == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout master branch
@@ -32,6 +33,7 @@ jobs:
           key: ${{ env.CHATBOT_MODEL_NAME }}.tar.gz
           
   blob-upload:
+    if: github.event.pull_request.merged == 'true'
     runs-on: ubuntu-latest
     needs: rasa-train
     steps:
@@ -52,6 +54,7 @@ jobs:
           -n ${{ github.event.repository.name }}/${{ env.CHATBOT_MODEL_NAME }}.tar.gz
    
   container-3-chatbots:
+    if: github.event.pull_request.merged == 'true'
     runs-on: ubuntu-latest
     needs: blob-upload
     steps:
