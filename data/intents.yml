@@ -17,6 +17,7 @@ nlu:
     - Bonjour
     - bonjour monsieur
     - halo
+    - Yo yo yo whattup
     
 - intent: chitchat/bye
   examples: |
@@ -28,6 +29,7 @@ nlu:
     - Have a nice day
     - Till next time
     - Thanks, bye
+    - Peace out
     
 - intent: chitchat/soccer
   examples: |
